@@ -1,26 +1,30 @@
 # tic tac toe game
 
+board = [
+    ['_', '_', '_'],
+    ['_', '_', '_'],
+    ['_', '_', '_']
+]
 
 def menu(tryagain):
     while tryagain:
         # Define function that starts game
-        pass
+        row = int(input("Enter row selection: "))
+        column = int(input("Enter column selection: "))
+        player = input("Enter Mark: ")
 
+        print_board(row, column, player)
 
-def print_board(selection, player):
-    top_line    = " _ | _ | _ "
-    middle_line = " _ | _ | _ "
-    bottom_line = "   |   |   "
+def print_board(row, column, player):
+    board[row][column] = player
 
-    print(top_line)
-    print(middle_line)
-    print(bottom_line)
-
+    print(board[0])
+    print(board[1])
+    print(board[2])
 
 
 def player_decision():
     print("X goes first (Choose 1-9): ")
 
 
-
-print_board('dummy', 'dummy')
+menu(True)
