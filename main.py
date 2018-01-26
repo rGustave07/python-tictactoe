@@ -1,59 +1,101 @@
 # tic tac toe game
+import random
 
-board = [
-    ['_', '_', '_'],
-    ['_', '_', '_'],
-    ['_', '_', '_']
-]
-
-
-def menu(tryagain):
-    while tryagain:
-        # Define function that starts game
-        row = int(input("Enter row selection: "))
-        column = int(input("Enter column selection: "))
-        player = input("Enter Mark: ")
-        print("\n")
-
-        print_board(row, column, player)
-        if check_win():
-            print("Game Over")
-            retry = input("Would you like to try again? (True/False)")
-            if retry == 'False':
-                tryagain = False
+global current_player
+current_player = 'X'
+board = ['hold', '1', '2', '3', '4', '5', '7', '7', '8', '9']
 
 
-def print_board(row, column, player):
-    board[row][column] = player
+def print_board(board):
+    print("Enter the corresponding number on the keyboard to make your selection!\n")
+    print("            |            |            ")
+    print("     " + str(board[1]) + "      |      " + str(board[2]) + "     |      " + str(board[3]) + "     ")
+    print("____________|____________|____________")
+    print("            |            |            ")
+    print("     " + str(board[4]) + "      |      " + str(board[5]) + "     |      " + str(board[6]) + "     ")
+    print("____________|____________|____________")
+    print("            |            |            ")
+    print("     " + str(board[7]) + "      |      " + str(board[8]) + "     |      " + str(board[9]) + "     ")
+    print("            |            |            ")
 
-    print(board[0])
-    print(board[1])
-    print(board[2])
+
+def menu(current_player):
+    new_game = input("Welcome to Tic-Tac-Toe! Would you like to start a new game?(Y/N) \n")
+    if new_game.lower() == 'y':
+        start = True
+    else:
+        start = False
+
+    while start:
+        print_board(board)
+        select_first_player()
+        result_check(current_player)
+
+        start = retry()
 
 
-def check_win():
-    if board[0][0] == 'X' or board[0][0] == 'O' and board[0][1] == 'X' or board[0][1] == 'O' and board[0][2] == 'X' or board[0][2] == 'O':
+def select_first_player():
+    first_time = True
+    if random.randint(0,2) == 1 and first_time:
+        first_time = False
+        current_player = 'X'
+        print(current_player + " goes first")
+        player_turn(current_player)
+    elif first_time:
+        first_time = False
+        current_player = 'O'
+        print(current_player + " goes first")
+        player_turn(current_player)
+
+    player_turn(current_player)
+
+
+def result_check(current_player):
+    for element in board[1:]:
+        if element != 'X' and element != 'O' and not element.isalnum():
+            print("The Game is Tied!")
+        else:
+            player_turn(current_player)
+
+    if   board[1] == board[4] == board[7]:
+        print(board[1] + " wins!")
+    elif board[1] == board[5] == board[9]:
+        print(board[1] + " wins!")
+    elif board[1] == board[2] == board[3]:
+        print(board[1] + " wins!")
+    elif board[2] == board[5] == board[8]:
+        print(board[2] + " wins!")
+    elif board[3] == board[5] == board[7]:
+        print(board[3] + " wins! ")
+    elif board[3] == board[6] == board[9]:
+        print(board[3] + " wins! ")
+    elif board[4] == board[5] == board[6]:
+        print(board[4] + " wins! ")
+    elif board[7] == board[8] == board[9]:
+        print(board[7] + " wins! ")
+    else:
+        pass
+
+
+def player_turn(current_player):
+    mark = input( current_player + " player select your box: ")
+    board[int(mark)] = current_player
+    print_board(board)
+    if current_player == 'X':
+        current_player = 'O'
+    elif current_player == 'O':
+        current_player = 'X'
+
+
+def retry():
+    new_game = input("Would you like to start a new game?(Y/N)")
+
+    if new_game.lower() == 'y':
         return True
-    elif board[1][0] == 'X' or board[1][0] == 'O' and board[1][1] == 'X' or board[1][1] == 'O' and board[1][2] == 'X' or board[1][2] == 'O':
-        return True
-    elif board[2][0] == 'X' or board[2][0] == 'O' and board[2][1] == 'X' or board[2][1] == 'O' and board[2][2] == 'X' or board[2][2] == 'O':
-        return True
-    elif board[0][0] == 'X' or board[0][0] == 'O' and board[1][0] == 'X' or board[1][0] == 'O' and board[2][0] == 'X' or board[2][0] == 'O':
-        return True
-    elif board[0][1] == 'X' or board[0][1] == 'O' and board[1][1] == 'X' or board[1][1] == 'O' and board[2][1] == 'X' or board[2][1] == 'O':
-        return True
-    elif board[0][2] == 'X' or board[0][2] == 'O' and board[1][2] == 'X' or board[1][2] == 'O' and board[2][2] == 'X' or board[2][2] == 'O':
-        return True
-    elif board[0][0] == 'X' or board[0][0] == 'O' and board[1][1] == 'X' or board[1][1] == 'O' and board[2][2] == 'X' or board[2][2] == 'O':
-        return True
-    elif board[0][2] == 'X' or board[0][2] == 'O' and board[1][1] == 'X' or board[1][1] == 'O' and board[2][0] == 'X' or board[2][0] == 'O':
-        return True
+    elif new_game.lower() == 'n':
+        return False
     else:
         return False
 
 
-def player_decision():
-    print("X goes first (Choose 1-9): ")
-
-
-menu(True)
+menu(current_player)
